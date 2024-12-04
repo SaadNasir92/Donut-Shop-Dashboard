@@ -1,5 +1,0 @@
-promotion_id,promotion_name,discount_percentage,description
-1,BOGO,0.5,"Happens sporadically throughout the year, all qualifying items that are not drinks are applicable."
-2,WINTER SPECIAL,0.5,"During Dec, Jan, Feb, all products 50% off. "
-3,BACK TO SCHOOL,0.25,"During first week of September, 25% off all products."
-4,None,0.0,No promotion

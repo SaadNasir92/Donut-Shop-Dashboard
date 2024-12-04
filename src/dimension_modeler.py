@@ -4,7 +4,7 @@ import pandas as pd
 class Dimension_Modeler:
     def __init__(self, dataframe: pd.DataFrame):
         self.df = dataframe
-        self.dimension_data_folder_path = "datasets/dimensions/"
+        self.fact_dim_data_folder_path = "datasets/fact_dimensions_models/"
 
     # Key adjustment is to allow flexibility in what order we want keys in.
     def make_id_col(self, key_name, key_adjustment=0):
@@ -20,7 +20,7 @@ class Dimension_Modeler:
         return self.df
 
     def make_csv(self, file_name):
-        print(f"{file_name}.csv created in {self.dimension_data_folder_path}")
+        print(f"{file_name}.csv created in {self.fact_dim_data_folder_path} folder.")
         return self.df.to_csv(
-            f"{self.dimension_data_folder_path}{file_name}.csv", index=False
+            f"{self.fact_dim_data_folder_path}{file_name}.csv", index=False
         )
