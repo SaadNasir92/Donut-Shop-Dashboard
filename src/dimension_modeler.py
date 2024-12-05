@@ -24,3 +24,7 @@ class Dimension_Modeler:
         return self.df.to_csv(
             f"{self.fact_dim_data_folder_path}{file_name}.csv", index=False
         )
+
+    def load_data(self, table_name, engine):
+        self.df.to_sql(table_name, engine, if_exists="append", index=False)
+        return print(f"{table_name} successfully loaded into database.")
