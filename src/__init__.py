@@ -3,9 +3,7 @@ import os
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
-import io
-from googleapiclient.http import MediaIoBaseDownload
-import pandas as pd
+
 
 # Globals
 load_dotenv()
@@ -29,3 +27,13 @@ SERVICE = build("drive", "v3", credentials=credentials)
 # Database setup
 DB_URL = f"postgresql+psycopg2://postgres:{DB_PASS}@localhost:5432/{DB_NAME}"
 ENGINE = create_engine(DB_URL, isolation_level="AUTOCOMMIT")
+
+# ETL Model Configuration
+# Logic code will refer to what process to occur during transformation.
+MODEL_CONFIG = {
+    "dim_employees": {
+        "merge_key": "employee_name",
+        "columns_to_drop": ["employee_name", "job_title"],
+        "logic_code": 1,
+    }
+}

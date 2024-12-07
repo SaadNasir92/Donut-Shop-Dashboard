@@ -7,9 +7,10 @@ from datetime import datetime as dt
 
 class ClientManager:
     def __init__(self) -> None:
-        self.logs_file = "datasets/client_shared/logs/logs.txt"
+        self.logs_file = "datasets/client_shared/logs/google_drive_logs.txt"
         self.raw_archive_folder = "datasets/client_shared/archive_raw/"
         self.to_be_processed_folder = "datasets/client_shared/to_be_processed/"
+        self.processed_folder = "datasets/client_shared/archive_processed/"
 
         self.log_process("Initializing client")
 
@@ -48,11 +49,12 @@ class ClientManager:
         if self.num_files_to_process > 0:
             self.log_process("Archiving incoming file(s) from client.")
 
-            for content in self.files_to_process:
+            for idx, content in enumerate(self.files_to_process):
                 file_name = content["name"]
                 file_id = content["id"]
                 df = self.download_file(file_name, file_id)
-                self.archive_incoming_data(df, file_name, file_id)
+                new_file_name = self.archive_incoming_data(df, file_name, file_id)
+                self.files_to_process[idx]["name"] = new_file_name
 
             self.log_process(
                 f"{self.num_files_to_process} files archived on {self.time_stamp}. Ready for processing."
@@ -92,14 +94,17 @@ class ClientManager:
 
     def archive_incoming_data(
         self, dataframe: pd.DataFrame, file_name: str, file_id: str
-    ) -> None:
+    ) -> str:
         archive_path = f"{self.raw_archive_folder}{file_name.split('.')[0]}-{file_id}-{self.time_stamp}.csv"
 
         to_be_processed_path = f"{self.to_be_processed_folder}{file_name.split('.')[0]}-{file_id}-{self.time_stamp}.csv"
 
+        dataframe.columns = dataframe.columns.str.lower().str.replace(" ", "_")
         dataframe.to_csv(archive_path, index=False)
         dataframe.to_csv(to_be_processed_path, index=False)
 
         self.log_process(
             f"Archived {file_name} with File ID: ({file_id}) at {self.time_stamp}."
         )
+
+        return to_be_processed_path
