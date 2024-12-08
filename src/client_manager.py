@@ -59,11 +59,9 @@ class ClientManager:
             self.log_process(
                 f"{self.num_files_to_process} files archived on {self.time_stamp}. Ready for processing."
             )
-            self.log_process("******************" * 50)
 
         else:
             self.log_process(f"No files to process at {self.time_stamp}")
-            self.log_process("******************" * 50)
             print("No files to process.")
 
     def download_file(self, file_name: str, file_id: str) -> pd.DataFrame:

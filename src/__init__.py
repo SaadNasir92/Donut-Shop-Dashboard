@@ -32,8 +32,41 @@ ENGINE = create_engine(DB_URL, isolation_level="AUTOCOMMIT")
 # Logic code will refer to what process to occur during transformation.
 MODEL_CONFIG = {
     "dim_employees": {
-        "merge_key": "employee_name",
+        "merge_key_left": "employee_name",
+        "merge_key_right": "employee_name",
         "columns_to_drop": ["employee_name", "job_title"],
         "logic_code": 1,
-    }
+    },
+    "dim_promotions": {
+        "merge_key_left": "promo_name",
+        "merge_key_right": "promotion_name",
+        "columns_to_drop": [
+            "promo_name",
+            "promotion_name",
+            "discount_percentage",
+            "description",
+        ],
+        "logic_code": 1,
+    },
+    "dim_payment_methods": {
+        "merge_key_left": "payment_method",
+        "merge_key_right": "payment_method",
+        "columns_to_drop": ["payment_method"],
+        "logic_code": 1,
+    },
+    "dim_products": {
+        "merge_key_left": "product_name",
+        "merge_key_right": "product_name",
+        "columns_to_drop": [
+            "price_per_unit",
+            "product_name",
+            "product_price",
+            "category",
+            "_merge",
+        ],
+        "logic_code": 2,
+        "join_key_left": ["product_name", "price_per_unit"],
+        "join_key_right": ["product_name", "product_price"],
+        "model_join_columns": ["product_key", "product_name", "product_price"],
+    },
 }
