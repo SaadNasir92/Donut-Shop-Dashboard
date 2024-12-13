@@ -26,10 +26,9 @@ class ETLManager:
             if value not in model_df[right_col_name].values:
                 self.log_process(f"{value} not found.")
                 # Perform add fucntion.
+                return True
             else:
-                pass
-
-        return True
+                return True
 
     def perform_merge(
         self,
@@ -70,3 +69,14 @@ class ETLManager:
         else:
             pass
             # Add price & do SCD2 logic.
+
+    def create_date_ids(self, df):
+        df["date"] = pd.to_datetime(df["date"])
+        df["date_raw"] = df["date"].dt.strftime("%y-%m-%d")
+        df["date_raw"] = pd.to_datetime(df["date_raw"], format="%y-%m-%d")
+        df["date_id"] = (
+            df["date_raw"].dt.year.astype(str)
+            + df["date_raw"].dt.month.astype(str).str.zfill(2)
+            + df["date_raw"].dt.day.astype(str).str.zfill(2)
+        )
+        df["date_id"] = df["date_id"].astype(int)

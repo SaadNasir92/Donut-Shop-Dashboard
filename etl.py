@@ -25,6 +25,7 @@ for file in etl_manager.files_to_process:
     new_file = file["name"]
     to_be_processed_df = pd.read_csv(new_file)
     to_be_processed_df = etl_manager.fix_dim_promotions(to_be_processed_df)
+    to_be_processed_df = etl_manager.create_date_ids(to_be_processed_df)
 
     for model_name, model_config in MODEL_CONFIG.items():
         model_file = f"{etl_manager.fact_dim_model_location}{model_name}.csv"
@@ -51,7 +52,8 @@ for file in etl_manager.files_to_process:
                 )
                 to_be_processed_df = final_df
                 etl_manager.log_process(f"{model_name} merge complete.")
-            else:
+
+            elif model_config["logic_code"] == 2:
                 etl_manager.log_process(
                     f"Merging new data with respective model: {model_name}."
                 )
@@ -67,6 +69,16 @@ for file in etl_manager.files_to_process:
                     )
                 to_be_processed_df = final_df
                 etl_manager.log_process(f"{model_name} merge complete.")
+
+            else:
+                etl_manager.log_process(
+                    f"Merging new data with respective model: {model_name}."
+                )
+                to_be_processed_df = etl_manager.drop_columns(
+                    model_config["columns_to_drop"], to_be_processed_df
+                )
+                etl_manager.log_process(f"{model_name} merge complete.")
+
 
 end_time_etl = time.perf_counter()
 elapsed_time_etl = end_time_etl - start_time

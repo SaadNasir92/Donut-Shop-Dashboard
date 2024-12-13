@@ -54,6 +54,12 @@ MODEL_CONFIG = {
         "columns_to_drop": ["payment_method"],
         "logic_code": 1,
     },
+    "dim_dates": {
+        "merge_key_left": "date_id",
+        "merge_key_right": "date_id",
+        "columns_to_drop": ["date_raw"],
+        "logic_code": 3,
+    },
     "dim_products": {
         "merge_key_left": "product_name",
         "merge_key_right": "product_name",
